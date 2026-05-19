@@ -38,23 +38,49 @@
 
 
 
-<section class="section-title">
-  <h2 id="section-title">      </h2>
-</section>
+<div id="adContainer"></div>
 
 <video id="video" width="800" controls>
   <source src="https://thumb-cdn77.xvideos-cdn.com/4ee10e8a-9cc8-4e85-acf0-7ec88fe018c6/3/preview.mp4" type="video/mp4">
 </video>
- 
+
 <script>
-const vastTag = "https://s.magsrv.com/v1/vast.php?idzone=5930084";
+const video = document.getElementById('video');
+const adContainer = document.getElementById('adContainer');
 
-console.log("VAST TAG:", vastTag);
+const adTagUrl = "https://s.magsrv.com/v1/vast.php?idzone=5930084";
+
+// تجهيز IMA
+const adDisplayContainer = new google.ima.AdDisplayContainer(adContainer, video);
+adDisplayContainer.initialize();
+
+const adsLoader = new google.ima.AdsLoader(adDisplayContainer);
+
+adsLoader.addEventListener(
+  google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
+  function(event) {
+    const adsManager = event.getAdsManager(video);
+
+    adsManager.init(800, 600, google.ima.ViewMode.NORMAL);
+    adsManager.start();
+  }
+);
+
+// Pre-roll request
+const adsRequest = new google.ima.AdsRequest();
+adsRequest.adTagUrl = adTagUrl;
+
+// مهم: يخلي الإعلان يشتغل قبل الفيديو
+adsRequest.linearAdSlotWidth = 800;
+adsRequest.linearAdSlotHeight = 600;
+
+adsLoader.requestAds(adsRequest);
+
+// تشغيل الفيديو بعد الإعلان
+video.addEventListener('ended', () => {
+  console.log("Video finished");
+});
 </script>
-</section>
-
-
-
 
 
 
@@ -70,4 +96,76 @@ console.log("VAST TAG:", vastTag);
 
 </body>
 
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EGY PRO</title>
+
+  <script src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+</head>
+
+<body>
+
+<div id="adContainer"></div>
+
+<video id="video" width="800" controls>
+  <source src="https://thumb-cdn77.xvideos-cdn.com/4ee10e8a-9cc8-4e85-acf0-7ec88fe018c6/3/preview.mp4" type="video/mp4">
+</video>
+
+<script>
+const video = document.getElementById('video');
+const adContainer = document.getElementById('adContainer');
+
+const adTagUrl = "https://s.magsrv.com/v1/vast.php?idzone=5930084";
+
+// تجهيز IMA
+const adDisplayContainer = new google.ima.AdDisplayContainer(adContainer, video);
+adDisplayContainer.initialize();
+
+const adsLoader = new google.ima.AdsLoader(adDisplayContainer);
+
+adsLoader.addEventListener(
+  google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
+  function(event) {
+    const adsManager = event.getAdsManager(video);
+
+    adsManager.init(800, 600, google.ima.ViewMode.NORMAL);
+    adsManager.start();
+  }
+);
+
+// Pre-roll request
+const adsRequest = new google.ima.AdsRequest();
+adsRequest.adTagUrl = adTagUrl;
+
+// مهم: يخلي الإعلان يشتغل قبل الفيديو
+adsRequest.linearAdSlotWidth = 800;
+adsRequest.linearAdSlotHeight = 600;
+
+adsLoader.requestAds(adsRequest);
+
+// تشغيل الفيديو بعد الإعلان
+video.addEventListener('ended', () => {
+  console.log("Video finished");
+});
+</script>
+
+</body>
 </html>
